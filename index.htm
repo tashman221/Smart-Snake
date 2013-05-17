@@ -1,0 +1,151 @@
+﻿<html>
+<head>
+    <title>snake beginner project</title>
+
+        <script>
+
+//*****************************all universal variables to be used throughout the program************************
+            var board = new Array(3);
+            var row = 6;
+            var column = 6;
+            var ROW_DIMENSION = 11;
+            var COLUMN_DIMENSION = 11;
+            var direction = "up";
+            var moveTimeInterval = 1000;
+            
+//**************************************************************************************************************
+
+//*************************function that starts the game********************************************************         
+            function startGame() {
+                buildBoard(row, column);
+                document.getElementById("gameBoard").innerHTML = boardMapping();
+                moveTimerId = setTimeout("autoMove()", 1000);
+            }
+//**************************************************************************************************************
+
+//**********************************functions that build the board***********************************************          
+            function buildBoard(row, column) {
+                for (var i = 0; i < COLUMN_DIMENSION; i++) {
+                    board[i] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+                }
+                board[row][column] = 'X';
+            }
+
+            function boardMapping() {
+                var boardToOutput = "";
+                boardToOutput = "<table style='width:100%; height:100%; border-color:Black;' border='1'>";
+                for (var i = 0; i < ROW_DIMENSION; i++) {
+                    boardToOutput = boardToOutput + "<tr>";
+                    for (var j = 0; j < COLUMN_DIMENSION; j++) {
+                        if (board[i][j] == 'X') {
+                            boardToOutput = boardToOutput + "<td style='background:url(https://si0.twimg.com/profile_images/1609405036/portrait_normal.jpg)' ></td>";
+                        } else {
+                            boardToOutput = boardToOutput + "<td></td>";
+                        }
+                    }
+                    boardToOutput = boardToOutput + "</tr>";
+                }
+
+                boardToOutput = boardToOutput + "</table>";
+
+                return boardToOutput;
+            }
+
+//*******************************************************************************************************************
+
+//***************************functions that deal with movement*******************************************************
+            function move(e) {
+                clearTimeout(moveTimerId);
+                if (e.keyCode == 38 && direction != "up" && direction != "down") {
+                    row = row - 1;
+                    if (row < 0) {
+                        row = ROW_DIMENSION - 1;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                    direction = "up";
+                } else if (e.keyCode == 40 && direction != "down" && direction != "up") {
+                    row = row + 1;
+                    if (row > ROW_DIMENSION - 1) {
+                        row = 0;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                    direction = "down";
+                }
+                else if (e.keyCode == 37 && direction != "left" && direction != "right") {
+                    column = column - 1;
+                    if (column < 0) {
+                        column = COLUMN_DIMENSION - 1;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                    direction = "left";
+                }
+                else if (e.keyCode == 39 && direction != "right" && direction != "left") {
+                    column = column + 1;
+                    if (column > COLUMN_DIMENSION - 1) {
+                        column = 0;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                    direction = "right";
+                }
+                moveTimerId = setTimeout("autoMove()", 1000);
+            }
+
+            function autoMove() {
+                if (direction == "up") {
+                    row = row - 1;
+                    if (row < 0) {
+                        row = ROW_DIMENSION - 1;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                } else if (direction == "down") {
+                    row = row + 1;
+                    if (row > ROW_DIMENSION - 1) {
+                        row = 0;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                }
+                else if (direction == "left") {
+                    column = column - 1;
+                    if (column < 0) {
+                        column = COLUMN_DIMENSION - 1;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                }
+                else if (direction == "right") {
+                    column = column + 1;
+                    if (column > COLUMN_DIMENSION - 1) {
+                        column = 0;
+                    }
+                    buildBoard(row, column);
+                    document.getElementById("gameBoard").innerHTML = boardMapping();
+                }
+                moveTimerId = setTimeout("autoMove()", 1000);
+
+            }
+
+            function pressedMove() {
+                moveTimerId = setTimeout("autoMove()", 1000);
+            }
+//******************************************************************************************************************
+
+//*****************************************keyboard listener for movement*******************************************           
+            var gameFieldDoc = document;
+            gameFieldDoc.addEventListener('keydown', move, false);
+            gameFieldDoc.addEventListener('keypressed', pressedMove, false);
+//******************************************************************************************************************
+
+    </script>
+</head>
+<body onload="startGame()" id ="snakeGame" name="keydown">
+<div id="gameBoard" style="width:100%;height:100%;">
+</div>
+</body>
+</html>
+
